@@ -101,10 +101,6 @@ interface CodeAuthFlow {
                     throw OpenIdConnectException.AuthenticationFailure("Invalid state")
                 }
                 val response = client.exchangeToken(request, result.code, configure)
-                val nonce = response.id_token?.parseJwt()?.payload?.nonce
-                if (!request.validateNonce(nonce ?: "")) {
-                    throw OpenIdConnectException.AuthenticationFailure("Invalid nonce")
-                }
                 return response
             } else {
                 throw OpenIdConnectException.AuthenticationFailure("No auth code", cause = null)
